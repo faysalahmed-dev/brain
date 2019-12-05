@@ -1,0 +1,11 @@
+.navigation {
+	display: flex;
+	justify-content: flex-end;
+	padding: 1rem 2rem;
+	&__list {
+		list-style: none;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+}

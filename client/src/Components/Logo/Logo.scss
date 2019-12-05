@@ -1,0 +1,25 @@
+.logo {
+     display: inline-block;
+     position: fixed;
+     top: 5rem;
+     left: 3rem;
+     &__container{
+          width: 10rem;
+          height: 10rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background :linear-gradient(0deg, rgb(85, 217, 233),rgb(86, 73, 252));
+          box-shadow: 0 .5rem .5rem rgba(0,0,0,.3);
+          position: relative;
+          transform-style: preserve-3d;
+          transform: perspective(1000px);
+          border-radius: .4rem;
+     }
+     img{
+          width: 80%;
+          margin: auto;
+          display: inline-block;
+          transform: translateZ(.5rem);
+     }
+}
