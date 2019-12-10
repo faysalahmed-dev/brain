@@ -1,6 +1,6 @@
 import React from "react";
+import axios from "axios";
 import inputHook from "../../../Hooks/inputHook";
-
 import FormInput from "../FormInput/FormInput";
 import { InputButton } from "../../UI/Button/Button";
 import "./SingUp.scss";
@@ -13,6 +13,13 @@ const SingUpForm = props => {
     onConfirmPasswordChange,
     confirmPasswordReset,
   ] = inputHook("");
+  const onSingUpFormSubmit = e => {
+    e.preventDefault();
+    axios.post("http://localhost:4000/register", {
+      email: userName,
+      password,
+    });
+  };
   return (
     <div className="card alt">
       {props.children}
@@ -20,7 +27,7 @@ const SingUpForm = props => {
         Register
         <div className="close" onClick={props.handleToggle}></div>
       </h1>
-      <form onSubmit={props.onSubmit}>
+      <form onSubmit={onSingUpFormSubmit}>
         <FormInput
           type="text"
           name="username"

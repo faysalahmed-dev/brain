@@ -1,28 +1,29 @@
-import React from 'react'
-import Particles from 'react-particles-js';
+import React from "react";
+import Particles from "react-particles-js";
 
-
-const particles = (props) => {
-     return (
-          <Particles className={props.className}
-               params={{
-                    "particles": {
-                         "number": {
-                              "value": 150
-                         },
-                         "size": {
-                              "value": 3
-                         }
-                    },
-                    "interactivity": {
-                         "events": {
-                              "onhover": {
-                                   "enable": true,
-                                   "mode": "repulse"
-                              }
-                         }
-                    }
-               }} />
-     )
-}
+const particles = props => {
+  return (
+    <Particles
+      className={props.className}
+      params={{
+        particles: {
+          number: {
+            value: 150,
+          },
+          size: {
+            value: 3,
+          },
+        },
+        interactivity: {
+          events: {
+            onhover: {
+              enable: false,
+              mode: "repulse",
+            },
+          },
+        },
+      }}
+    />
+  );
+};
 export default particles;

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import axios from "axios";
 import inputHook from "../../../Hooks/inputHook";
 
 import FormInput from "../FormInput/FormInput";
 import { InputButton } from "../../UI/Button/Button";
 import SingUpForm from "../SingUp/SingUp";
-import { ReactComponent as User } from "../../../Assets/user-plus.svg";
+// import { ReactComponent as User } from "../../../Assets/user-plus.svg";
 import "./Login.scss";
 
 const Login = props => {
@@ -13,13 +14,22 @@ const Login = props => {
   const [password, onPasswordChange, passwordReset] = inputHook("");
 
   const handleToggle = () => setToggle(!toggle);
+
+  const onLoginFormSubmit = async e => {
+    e.preventDefault();
+    const res = await axios.post("http://localhost:4000/singin", {
+      email: userName,
+      password,
+    });
+    console.log(res);
+  };
   return (
     <React.Fragment>
       <div className={toggle ? "form__container active" : "form__container"}>
         <div className="card"></div>
         <div className="card">
           <h1 className="title">Login</h1>
-          <form onSubmit={props.onSubmit} autoComplete="off">
+          <form onSubmit={onLoginFormSubmit} autoComplete="off">
             <FormInput
               type="text"
               name="username"

@@ -41,7 +41,6 @@ class SmartBrain extends Component {
   };
   componentDidMount() {
     axios.get("http://localhost:4000/").then(console.log);
-    //.then(console.log);
   }
   render() {
     const { imgUrl, box } = this.state;
