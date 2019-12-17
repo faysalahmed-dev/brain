@@ -1,0 +1,10 @@
+.auth_page {
+  overflow: hidden;
+  &__form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 80px);
+    margin-top: -2rem;
+  }
+}

@@ -1,60 +1,30 @@
-$inputHeight: 6rem;
-$inputColor: #fff;
-@mixin label {
-     color: #dddddd;
-    
-     transform: translateY(-3rem) scale(.7);
-}
+$inputHeight: 4rem;
+$inputColor: rgba(255, 255, 255, 0.883);
 .input-container {
-  position: relative;
-  margin: 0 5rem 4rem;
-     & input {
-          height: $inputHeight;
-          color: $inputColor;
-          outline: none;
-          z-index: 1;
-          position: relative;
-          background: none;
-          width: 100%;
-          border: 0;
-          font-size: 1.6rem;
-          font-weight: 400;
-          &:focus ~ label {
-             @include label;
-          }
-     }
-     & label {
-          position: absolute;
-          top: 0;
-          left: 0;
-          color: rgba(255, 255, 255, 0.801);
-          font-size: 18px;
-          font-weight: 300;
-          line-height: 60px;
-          transition: 0.2s ease;
-          transform-origin: left;
-     }
-     & .bar {
-          position: absolute;
-          left: 0;
-          bottom: 0;
-          background: #e6e6e6;
-          width: 100%;
-          height: 1px;
-          &:before,
-          &:after {
-               content: '';
-               position: absolute;
-               //background: linear-gradient(to right, #ffa751, #ffe259);
-               background: linear-gradient(to right, #4e4376, #2b5876);
-               width: 0;
-               height: 2px;
-               transition: .2s ease;
-          }
-          &:after {right: 50%;}
-          &:before{  left: 50%;}
-     }
+  margin-bottom: 3rem;
+  & input {
+    height: $inputHeight;
+    color: $inputColor;
+    outline: none;
+    background: rgba(#000000, 0.4);
+    width: 100%;
+    border: 0px;
+    font-size: 1.7rem;
+    font-weight: 400;
+    text-align: center;
+    border-radius: 2px;
+    font-family: var(--font-family);
+    box-shadow: 0 5px 5px rgba(#000000, 0.2);
+  }
 }
-.label-transform {
-     @include label;
+::placeholder {
+  color: rgba(255, 255, 255, 0.692);
+  font-weight: 300;
+  font-size: 1.6;
+}
+.error {
+  box-shadow: inset 0 0px 10px rgb(246, 121, 121) !important;
+}
+.success {
+  box-shadow: inset 0 0px 10px rgba(125, 246, 121, 0.931) !important;
 }

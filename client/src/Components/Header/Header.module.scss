@@ -1,0 +1,10 @@
+.header {
+  transform: translatey(3rem);
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 120rem;
+    margin: auto;
+  }
+}

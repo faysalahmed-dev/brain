@@ -1,0 +1,32 @@
+.form {
+  width: 100%;
+  padding: 3rem 4.5rem;
+  background: var(--primary-gradient);
+  box-shadow: 0 5px 10px rgba(#000000, 0.5);
+  h2 {
+    text-align: center;
+    color: #fff;
+    font-size: 2.5rem;
+    font-weight: 400;
+    margin-bottom: 3rem;
+  }
+  button {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &__footer {
+    margin-top: 2rem;
+    a {
+      font-size: 1.5rem;
+      color: rgba(255, 255, 255, 0.726);
+      background: transparent;
+      border: 0;
+      outline: none;
+      cursor: pointer;
+      font-family: var(--font-family);
+      word-spacing: -1px;
+    }
+  }
+}

@@ -7,7 +7,7 @@ const compression = require("compression");
 const morgan = require("morgan");
 const rateLimiter = require("express-rate-limit");
 const cookieParser = require("cookie-parser");
-const errorHandler = require("./utils/errorHandler");
+const ErrorHandler = require("./utils/errorHandler");
 const globalErrorController = require("./controller/errorController");
 
 const route = require("./routes/routes");
@@ -39,7 +39,9 @@ if (process.env.NODE_ENV === "development") {
 }
 app.use("/api/v1/", route);
 
-app.all("*", (req, res, next) => next(new errorHandler("page not found", 404)));
+app.all("*", (req, res, next) => {
+  next(new ErrorHandler(`can't find ${req.originalUrl} in the server !`, 404));
+});
 
 app.use(globalErrorController);
 

@@ -1,0 +1,3 @@
+handle duplicate email error when users register (server)
+
+forget password route (client)

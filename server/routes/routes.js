@@ -25,12 +25,17 @@ router.post("/forget-password", forgetPassword);
 router.post("/reset-password/:resetToken", resetPassword);
 
 // procted route
-router.use(protectRoute);
-router.get("/account", profile);
-router.delete("/delete-account", deleteAccount);
-router.get("/logout", logout);
-router.put("/image", image);
-router.put("/update-account", uploadUserPhoto, resizePhoto, updateAccount);
-router.put("/update-password", updatePassword);
+router.get("/account", protectRoute, profile);
+router.delete("/delete-account", protectRoute, deleteAccount);
+router.get("/logout", protectRoute, logout);
+router.put("/image", protectRoute, image);
+router.put(
+  "/update-account",
+  protectRoute,
+  uploadUserPhoto,
+  resizePhoto,
+  updateAccount,
+);
+router.put("/update-password", protectRoute, updatePassword);
 
 module.exports = router;

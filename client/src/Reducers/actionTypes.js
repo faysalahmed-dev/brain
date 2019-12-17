@@ -1,0 +1,6 @@
+export const SUBMIT_LOGIN_FORM = "SUBMIT_LOGIN_FORM";
+export const TOGGLE_THE_BUTTON = "TOGGLE_THE_BUTTON";
+export const TOGGLE_THE_LOADER = "TOGGLE_THE_LOADER";
+export const CLEAR_INPUT = "CLEAR_INPUT";
+export const ERROR_LOG = "ERROR_LOG";
+export const ON_INPUT_CHANGE = "ON_INPUT_CHANGE";

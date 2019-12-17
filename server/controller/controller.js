@@ -86,7 +86,7 @@ exports.register = catchError(async (req, res, next) => {
       .insert({ email: email.trim().toLowerCase(), password: hashedPassword })
       .into("login")
       .returning("email")
-      .then(async loginEamil => {
+      .then(loginEamil => {
         return trx("users")
           .returning("*")
           .insert({ email: loginEamil[0].toLowerCase(), name: name.trim() })
@@ -96,11 +96,15 @@ exports.register = catchError(async (req, res, next) => {
               token,
               data: user[0],
             });
-          });
+          })
+          .catch(next);
       })
       .then(trx.commit)
-      .catch(trx.rollback);
-  });
+      .catch(err => {
+        next(err);
+        trx.rollback(err);
+      });
+  }).catch(next);
 });
 
 exports.profile = catchError(async (req, res, next) => {
@@ -281,7 +285,6 @@ exports.updateAccount = catchError(async (req, res, next) => {
 });
 
 exports.updatePassword = catchError(async (req, res, next) => {
-  console.log("update password");
   const { password, newPassword } = req.body;
   if (
     !password ||
