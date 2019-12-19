@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
-import SmartBrain from "../../Containers/SmartBrian/SmartBrian";
+import { Link } from "react-router-dom";
 import Header from "../../Components/Header/Header";
-import "./Home.scss";
 import { userContext } from "../../Context/User.context";
 import { AlertContext } from "../../Context/Alert.context";
-import { SmartBrainContextProvider } from "../../Context/SmartBrian.context";
 import AlertBox from "../../Components/UI/AlertMessage/Alert";
 
-const HomePage = () => {
+import styles from "./PageNotFound.module.sass";
+
+const PageNotFound = () => {
   const {
     user: { data, token },
   } = useContext(userContext);
@@ -21,18 +21,18 @@ const HomePage = () => {
   ];
   const withUser = ["profile", "logout"];
   return (
-    <div className="home">
+    <div className={styles.page_not_found}>
       {isShowAlert && <AlertBox>{message}</AlertBox>}
       <Header item={data && token ? withUser : withOutUser} />
       <main>
-        <div className="container home__main">
-          <SmartBrainContextProvider>
-            <SmartBrain />
-          </SmartBrainContextProvider>
+        <div>
+          <h1>404</h1>
+          <h2>Ops. Look like you've lost</h2>
+          <Link to="/">Go To Home</Link>
         </div>
       </main>
     </div>
   );
 };
 
-export default HomePage;
+export default PageNotFound;

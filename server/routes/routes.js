@@ -1,10 +1,9 @@
 const { Router } = require("express");
-
 const {
   singin,
   register,
   profile,
-  image,
+  imageEntriesCount,
   checkEmail_Password,
   resetPassword,
   forgetPassword,
@@ -16,6 +15,7 @@ const {
   uploadUserPhoto,
   resizePhoto,
 } = require("../controller/controller");
+const { detectFace } = require("../controller/clarifaiController");
 
 const router = Router();
 // below route is for public
@@ -28,7 +28,7 @@ router.post("/reset-password/:resetToken", resetPassword);
 router.get("/account", protectRoute, profile);
 router.delete("/delete-account", protectRoute, deleteAccount);
 router.get("/logout", protectRoute, logout);
-router.put("/image", protectRoute, image);
+router.put("/image-entries", protectRoute, imageEntriesCount);
 router.put(
   "/update-account",
   protectRoute,
@@ -37,5 +37,10 @@ router.put(
   updateAccount,
 );
 router.put("/update-password", protectRoute, updatePassword);
+router.post("/detect-face", detectFace);
+// router.get("/test", (req, res) => {
+//   console.log(req.headers);
+//   res.status(200).json({ status: "success" });
+// });
 
 module.exports = router;

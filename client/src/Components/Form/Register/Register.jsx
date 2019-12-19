@@ -8,10 +8,7 @@ import FormInput from "../FormInput/FormInput";
 import { InputButton } from "../../UI/Button/Button";
 import axios from "../../../axios/axios";
 import Loader from "../../Loader/Loader";
-import patten from "../../../Utils/regPatten";
-import AlertBox from "../../UI/AlertMessage/Alert";
 import { AlertContext } from "../../../Context/Alert.context";
-import { saveUserInLs } from "../../../Utils/localStorge";
 import {
   toggleDisabledButton,
   toggleTheLoader,
@@ -20,6 +17,7 @@ import {
   clearInput,
 } from "../../../Reducers/FormReducers/Form.action";
 import { testInputValue, buttonDisabledOrNot } from "../../../Utils/Form";
+import { userContext } from "../../../Context/User.context";
 
 import styles from "../Form.module.scss";
 
@@ -38,8 +36,8 @@ const RegisterForm = props => {
     error,
   } = state;
 
-  const { alert, showAlert } = useContext(AlertContext);
-  const { show: isShowAlert, message } = alert;
+  const { showAlert } = useContext(AlertContext);
+  const { setUserData } = useContext(userContext);
 
   useEffect(() => {
     const btnDis = buttonDisabledOrNot(error);
@@ -69,18 +67,20 @@ const RegisterForm = props => {
       .then(res => {
         if (!res) return;
         dispatch(toggleTheLoader(false));
-        const { data } = res;
-        if (data.status === "success") {
+        const {
+          data: { data, status, token, message },
+        } = res;
+        if (status === "success") {
           // show alert with message
-          showAlert("Account Successfully created");
-          // save user to the loacal storge
-          saveUserInLs(data.data, data.token);
+          showAlert("Account created..");
+          //update the state as well as save user data in local storage
+          setUserData(data, token);
           // reseting all the input
           dispatch(clearInput());
           // redirect to home page
-          //setTimeout(() => props.history.replace("/"), 500);
+          setTimeout(() => props.history.replace("/"), 500);
         } else {
-          showAlert(data.message);
+          showAlert(message);
         }
       })
       .finally(() => {
@@ -91,7 +91,6 @@ const RegisterForm = props => {
 
   return (
     <form className={styles.form} onSubmit={onFormSubmit}>
-      {isShowAlert && <AlertBox>{message}</AlertBox>}
       <h2>Register</h2>
       <FormInput
         type="text"

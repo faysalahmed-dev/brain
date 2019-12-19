@@ -1,0 +1,19 @@
+.content {
+  text-align: center;
+  &__title {
+    color: #fff;
+    font-size: 3rem;
+    letter-spacing: 0.5rem;
+    font-weight: 700;
+    word-spacing: -5px;
+    letter-spacing: -1px;
+  }
+  &__sub_title {
+    color: rgb(0, 0, 0);
+    font-size: 2rem;
+    margin: 2rem;
+    letter-spacing: 0.3rem;
+    font-weight: 200;
+    word-spacing: -2px;
+  }
+}

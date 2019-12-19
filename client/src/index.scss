@@ -16,6 +16,7 @@ body {
   font-family: var(--font-family);
   font-weight: 400;
   line-height: 1.6;
+  overflow: hidden;
 }
 #root {
   position: relative;
@@ -23,7 +24,7 @@ body {
 a,
 button,
 input {
-  font-size: "Courier Prime";
+  font-size: var(--font-family);
   font-family: initial;
   display: inline-block;
 }

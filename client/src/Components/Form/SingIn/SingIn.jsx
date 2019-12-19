@@ -5,13 +5,11 @@ import {
   initialState,
 } from "../../../Reducers/SinginFormReducers/SinginForm.reducer";
 import axios from "../../../axios/axios";
-import { saveUserInLs } from "../../../Utils/localStorge";
 import FormInput from "../FormInput/FormInput";
 import { InputButton } from "../../UI/Button/Button";
 import Loader from "../../Loader/Loader";
-import AlertBox from "../../UI/AlertMessage/Alert";
 import { AlertContext } from "../../../Context/Alert.context";
-import patten from "../../../Utils/regPatten";
+import { userContext } from "../../../Context/User.context";
 
 import {
   toggleDisabledButton,
@@ -24,21 +22,19 @@ import { testInputValue } from "../../../Utils/Form";
 
 import styles from "../Form.module.scss";
 
-const Login = props => {
+const SingIn = props => {
   const [state, dispatch] = useReducer(formReducer, initialState);
-
   const { email, password, buttonIsDisabled, showLoader, error } = state;
 
-  const { alert, showAlert } = useContext(AlertContext);
-  const { show: isShowAlert, message } = alert;
-
+  const { showAlert } = useContext(AlertContext);
+  const { setUserData } = useContext(userContext);
   useEffect(() => {
     const formError = Object.values(error).every(err => err === false);
     if (formError) dispatch(toggleDisabledButton(false));
     else dispatch(toggleDisabledButton(true));
   }, [error]);
 
-  const onLoginFormSubmit = e => {
+  const onSingInFormSubmit = e => {
     e.preventDefault();
     dispatch(toggleTheLoader(true));
     dispatch(toggleDisabledButton(true));
@@ -52,23 +48,24 @@ const Login = props => {
         if (!res) return;
         //stop button loader
         dispatch(toggleTheLoader(false));
-        const { data } = res;
-        if (data.status === "success") {
+        const {
+          data: { data, status, token, message },
+        } = res;
+        if (status === "success") {
           // show alert with message
           showAlert("Logged in...");
-          // save user to the loacal storge
-          saveUserInLs(data.data, data.token);
+          // updating the state as well as save user data to local stroage
+          setUserData(data, token);
           // reseting all the input
           dispatch(clearInput());
           // redirect to home page
           setTimeout(() => props.history.replace("/"), 500);
         } else {
-          showAlert(data.message);
+          showAlert(message);
         }
       })
       .finally(() => {
         dispatch(toggleTheLoader(false));
-        setTimeout(() => showAlert(false), 500);
       });
   };
 
@@ -81,8 +78,7 @@ const Login = props => {
 
   return (
     <React.Fragment>
-      <form onSubmit={onLoginFormSubmit} className={styles.form}>
-        {isShowAlert && <AlertBox>{message}</AlertBox>}
+      <form onSubmit={onSingInFormSubmit} className={styles.form}>
         <h2>Sing In</h2>
         <FormInput
           type="text"
@@ -121,4 +117,4 @@ const Login = props => {
   );
 };
 
-export default withRouter(Login);
+export default withRouter(SingIn);

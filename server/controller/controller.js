@@ -124,7 +124,7 @@ exports.profile = catchError(async (req, res, next) => {
   sendResponse(res, 200, { message: "no such as user found" });
 });
 
-exports.image = catchError(async (req, res) => {
+exports.imageEntriesCount = catchError(async (req, res) => {
   const { id } = req.user;
   const userEntries = await db("users")
     .select("*")
@@ -230,9 +230,10 @@ exports.protectRoute = async (req, res, next) => {
   const { authorization } = req.headers;
   if (authorization && authorization.startsWith("Bearer")) {
     token = authorization.split(" ")[1];
-  } else if (req.cookies.token) {
-    token = req.cookies.token;
   }
+  // else if (req.cookies.token) {
+  //   token = req.cookies.token;
+  // }
 
   if (!token || !isJWT(token)) {
     return next(

@@ -1,17 +1,3 @@
-import patten from "./regPatten";
-export const testInputValue = (name, value, password) => {
-  if (name === "confirmPassword") {
-    if (!patten.password.test(value) || password !== value) {
-      return [name, true];
-    }
-    return [name, false];
-  } else if (!patten[name].test(value)) return [name, true];
-  else return [name, false];
-};
-
-export const buttonDisabledOrNot = error =>
-  Object.values(error).every(err => err === false);
-
 function testImage(url, timeoutT) {
   return new Promise((resolve, reject) => {
     const timeout = timeoutT || 5000;
@@ -35,6 +21,6 @@ function testImage(url, timeoutT) {
   });
 }
 
-export function runImage(url, callBack) {
-  testImage(url).then(callBack.bind(null, url), callBack.bind(null, url));
-}
+exports.runImage = (url, callBack) => {
+  testImage(url).then(callBack.bind(null), callBack.bind(null));
+};

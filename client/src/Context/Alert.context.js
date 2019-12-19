@@ -4,15 +4,16 @@ export const AlertContext = createContext();
 
 export function AlertContextPovider({ children }) {
   const [alert, setAlert] = useState({
-    show: false,
+    isShowAlert: false,
     message: "",
   });
   const showAlert = alrt => {
     setAlert({
-      show: typeof alrt === "boolean" ? alrt : true,
+      isShowAlert: typeof alrt === "boolean" ? alrt : true,
       message: typeof alrt === "string" ? alrt : "",
     });
   };
+  if (alert.isShowAlert) setTimeout(() => showAlert(false), 2000);
   return (
     <AlertContext.Provider
       value={{

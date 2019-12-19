@@ -1,0 +1,20 @@
+.url-input-box {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-gap: 0 2rem;
+  box-shadow: 0 1rem 1rem rgba(#000, 0.5);
+  background: linear-gradient(to right bottom, #4e437675, #2b587650);
+  div {
+    margin-bottom: 0;
+  }
+  input {
+    height: 100%;
+    width: 100%;
+  }
+  padding: 2rem;
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

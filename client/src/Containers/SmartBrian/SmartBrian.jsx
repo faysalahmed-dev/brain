@@ -1,56 +1,69 @@
-import React, { Component, Fragment } from "react";
-import axios from "axios";
-import SearchBox from "../../Components/SearchBox/SearchBox";
-import Clarifai from "clarifai";
-
+import React, { Fragment, useContext } from "react";
+import axios from "../../axios/axios";
+import ImgInputBox from "../../Components/ImgInputBox/ImgInputBox";
 import Content from "../../Components/Content/Content";
 import FaceRecognition from "../../Components/FaceRecognition/FaceRecognition";
-import imgRef from "../../Refs/ImgRef";
+import { calculateFaceBox } from "../../Utils/calculateFaceBox";
+import { updateBox } from "../../Reducers/SmartBrainReducers/SmartBrain.action";
+import { AlertContext } from "../../Context/Alert.context";
+import { runImage } from "../../Utils/Form";
+import { userContext } from "../../Context/User.context";
 
-const app = new Clarifai.App({
-  apiKey: "7fcfe4b1fbf04f6685cebdde3ca52ff0",
-});
+import { errorLog } from "../../Reducers/SmartBrainReducers/SmartBrain.action";
 
-class SmartBrain extends Component {
-  state = {
-    imgUrl: "",
-    box: {},
-  };
-  calculateFaceBox = data => {
-    const FaceBox =
-      data.rawData.outputs[0].data.regions[0].region_info.bounding_box;
-    const width = imgRef.current.width;
-    const height = imgRef.current.height;
-    return {
-      leftCol: FaceBox.left_col * width,
-      topRow: FaceBox.top_row * height,
-      rightCol: width - FaceBox.right_col * width,
-      bottomRow: height - FaceBox.bottom_row * height,
-    };
-  };
-  displayFaceBox = box => {
-    this.setState({ box }, () => console.log(box));
-  };
-  onFormSubmit = url => {
-    this.setState({ imgUrl: url });
+import { SmartBrainContext } from "../../Context/SmartBrian.context";
+import { toggleTheLoader } from "../../Reducers/FormReducers/Form.action";
 
-    app.models
-      .predict(Clarifai.FACE_DETECT_MODEL, url)
-      .then(response => this.displayFaceBox(this.calculateFaceBox(response)))
-      .catch(err => console.log(err));
+const SmartBrain = () => {
+  const {
+    state: { imgUrl, error, showLoader },
+    dispatch,
+  } = useContext(SmartBrainContext);
+
+  const { showAlert } = useContext(AlertContext);
+  const { updateData, user } = useContext(userContext);
+
+  const displayFaceBox = box => {
+    dispatch(updateBox(box));
   };
-  componentDidMount() {
-    axios.get("http://localhost:4000/").then(console.log);
-  }
-  render() {
-    const { imgUrl, box } = this.state;
-    return (
-      <Fragment>
-        <Content />
-        <SearchBox onFormSubmit={this.onFormSubmit} />
-        <FaceRecognition imgUrl={imgUrl} box={box} />
-      </Fragment>
-    );
-  }
-}
+  const onFormSubmit = e => {
+    e.preventDefault();
+    dispatch(toggleTheLoader(true));
+    runImage(imgUrl, (url, status) => {
+      if (status === "success") {
+        dispatch(errorLog(false));
+        return axios
+          .post("/detect-face", { input: imgUrl })
+          .then(({ data }) => {
+            dispatch(toggleTheLoader(false));
+            displayFaceBox(calculateFaceBox(data));
+            if (user.data && user.token) {
+              axios.put("image-entries").then(entRes => {
+                if (!entRes) return;
+                if (entRes.data.status === "success") {
+                  updateData(entRes.data.data);
+                }
+              });
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            showAlert("Ops.can't detect the face.");
+          });
+      }
+      if (status === "timeout") showAlert("image can not load. timeout!");
+      if (status === "error") showAlert("please give valid image address");
+      dispatch(errorLog(true));
+    });
+  };
+  return (
+    <Fragment>
+      <Content />
+      <ImgInputBox handleSubmit={onFormSubmit} />
+      {/* error have three value (null || false || true) so make sure to check error === false*/}
+      {error === false && !showLoader ? <FaceRecognition /> : null}
+    </Fragment>
+  );
+};
+
 export default SmartBrain;
