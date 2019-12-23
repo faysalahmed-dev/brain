@@ -1,4 +1,4 @@
-import React, { useContext, lazy, Suspense, useEffect, useState } from "react";
+import React, { useContext, lazy, Suspense } from "react";
 import { Switch, Route } from "react-router-dom";
 
 import { AlertContextPovider } from "./Context/Alert.context";

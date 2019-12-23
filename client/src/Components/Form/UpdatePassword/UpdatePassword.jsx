@@ -54,7 +54,6 @@ const UpdatePassword = () => {
         axios
             .put("/update-password", { password, newPassword })
             .then(res => {
-                console.log(res);
                 if (!res) return;
                 if (res.data.status === "success") {
                     showAlert("password is updated");

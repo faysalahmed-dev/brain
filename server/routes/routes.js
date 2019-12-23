@@ -1,20 +1,24 @@
 const { Router } = require("express");
 const {
-  singin,
-  register,
-  profile,
-  imageEntriesCount,
-  checkEmail_Password,
-  resetPassword,
-  forgetPassword,
-  updateAccount,
-  updatePassword,
-  deleteAccount,
-  logout,
-  protectRoute,
-  uploadUserPhoto,
-  resizePhoto,
-} = require("../controller/controller");
+    profile,
+    imageEntriesCount,
+    updateAccount,
+    updatePassword,
+    deleteAccount,
+    logout,
+    protectRoute,
+} = require("../controller/userController");
+const {
+    singin,
+    register,
+    checkEmail_Password,
+    resetPassword,
+    forgetPassword,
+} = require("../controller/authControllers");
+const {
+    resizePhoto,
+    uploadUserPhoto,
+} = require("../controller/factoryController");
 const { detectFace } = require("../controller/clarifaiController");
 
 const router = Router();
@@ -30,11 +34,11 @@ router.delete("/delete-account", protectRoute, deleteAccount);
 router.get("/logout", protectRoute, logout);
 router.put("/image-entries", protectRoute, imageEntriesCount);
 router.put(
-  "/update-account",
-  protectRoute,
-  uploadUserPhoto,
-  resizePhoto,
-  updateAccount,
+    "/update-account",
+    protectRoute,
+    uploadUserPhoto,
+    resizePhoto,
+    updateAccount,
 );
 router.put("/update-password", protectRoute, updatePassword);
 router.post("/detect-face", detectFace);

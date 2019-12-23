@@ -30,7 +30,7 @@ class ForgetPassword extends React.Component {
             })
             .then(res => {
                 const {
-                    data: { data, status, token, message },
+                    data: { status, message },
                 } = res;
                 if (status === "success") {
                     showAlert(message);
