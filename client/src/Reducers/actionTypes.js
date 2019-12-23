@@ -10,5 +10,12 @@ export const UPDATE_BOX = "UPDATE_BOX";
 
 //user
 export const SET_USER_DATA = "SET_USER_DATA";
-
+export const UPDATE_TOKEN = "UPDATE_TOKEN";
 export const TOGGLE_MODEL = "TOGGLE_MODEL";
+
+//update info
+export const SET_USER = "SET_USER";
+export const EDIT_MODE = "EDIT_MODE";
+
+//updta password
+export const CANCLE_EDIT = "CANCLE_EDIT";

@@ -1,0 +1,82 @@
+.Update_info {
+    &__upload {
+        display: none;
+    }
+    &__photo {
+        position: relative;
+        &::before {
+            content: "\270E";
+            position: absolute;
+            display: block;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-gradient);
+            transform: rotate(90deg) scale(0);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 5rem;
+            color: #fff;
+            opacity: 0;
+            transition: all 0.2s;
+            border-radius: 50%;
+        }
+        &:hover::before {
+            opacity: 1;
+            transform: rotate(90deg) scale(1.1);
+        }
+        &:active::before {
+            transform: rotate(90deg) scale(1);
+        }
+    }
+    &__img_box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 3rem;
+        div {
+            margin-left: 2rem;
+            color: rgba(255, 255, 255, 0.699);
+            p {
+                font-size: 2rem;
+                span {
+                    color: #fff;
+                }
+            }
+            a {
+                color: rgba(255, 255, 255, 0.699);
+                display: inline-block;
+                font-size: 1.6rem;
+            }
+        }
+    }
+    [type="submit"] {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    label {
+        font-size: 2rem;
+        cursor: pointer;
+        width: 150px;
+        height: 150px;
+        display: inline-block;
+        border-radius: 50%;
+        overflow: hidden;
+        img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            //object-fit: cover;
+        }
+    }
+    &__button_group {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 1rem;
+    }
+    :disabled {
+        opacity: 0.7 !important;
+        background: rgba(#000000, 0.4);
+    }
+}

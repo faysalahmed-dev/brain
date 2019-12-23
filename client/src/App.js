@@ -1,37 +1,45 @@
-import React, { useContext } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
-
-import Particles from "./Components/Particles-js/Particles";
-
-import AuthPage from "./Pages/Auth/AuthPage";
-import HomePage from "./Pages/Home/HomePage";
-import PageNotFound from "./Pages/PageNotFound/PageNotFound";
-import Logout from "./Containers/Logout/Logout";
+import React, { useContext, lazy, Suspense, useEffect, useState } from "react";
+import { Switch, Route } from "react-router-dom";
 
 import { AlertContextPovider } from "./Context/Alert.context";
-import { UserProvider } from "./Context/User.context";
-import { userContext } from "./Context/User.context";
+import { UserProvider, userContext } from "./Context/User.context";
+
+import Particles from "./Components/Particles-js/Particles";
+import PageLoader from "./Components/UI/PageLoader/PageLoader";
+
+import HomePage from "./Pages/Home/HomePage";
+import Logout from "./Containers/Logout/Logout";
+
+const AuthPage = lazy(() => import("./Pages/Auth/AuthPage"));
+const Profile = lazy(() => import("./Pages/Profile/Profile"));
+const PageNotFound = lazy(() => import("./Pages/PageNotFound/PageNotFound"));
+
 
 function App() {
-  const { data, token } = useContext(userContext);
-  return (
-    <UserProvider>
-      <AlertContextPovider>
-        <Particles>
-          <Switch>
-            <Route path="/" exact component={HomePage} />
-            <Route path="/auth" component={AuthPage} />
-            {data && token ? (
-              <Route path="/logout" component={Logout} />
-            ) : (
-              <Redirect to="/" />
-            )}
-            <Route component={PageNotFound} />
-          </Switch>
-        </Particles>
-      </AlertContextPovider>
-    </UserProvider>
-  );
+    const { data, token } = useContext(userContext);
+    return (
+        <UserProvider>
+            <AlertContextPovider>
+                <Particles>
+                    <Suspense fallback={<PageLoader />}>
+                        <Switch>
+                            <Route path="/auth" component={AuthPage} />
+                            {data && token ? (
+                                <Route
+                                    path="/logout"
+                                    exact
+                                    component={Logout}
+                                />
+                            ) : null}
+                            <Route path="/profile" exact component={Profile} />
+                            <Route path="/" exact component={HomePage} />
+                            <Route component={PageNotFound} />
+                        </Switch>
+                    </Suspense>
+                </Particles>
+            </AlertContextPovider>
+        </UserProvider>
+    );
 }
 
 export default App;

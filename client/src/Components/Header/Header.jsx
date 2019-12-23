@@ -15,4 +15,4 @@ const Header = ({ item }) => {
     </header>
   );
 };
-export default Header;
+export default React.memo(Header);

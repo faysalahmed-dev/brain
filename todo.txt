@@ -2,5 +2,9 @@ handle duplicate email error when users register (server)
 
 forget password route (client)
 profile page (client)
+
 save the histroy of all the detected image
-update count for unauth users
+
+isuse
+    disabled button when face si detecteding
+

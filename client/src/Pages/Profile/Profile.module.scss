@@ -1,0 +1,7 @@
+.profile_page {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 0 3rem;
+    align-content: center;
+    margin-top: 3rem;
+}
