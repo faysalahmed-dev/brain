@@ -1,9 +1,8 @@
-import React, { useContext,memo } from "react";
+import React, { useContext, useState } from "react";
 import { userContext } from "../../Context/User.context";
-import { offlineUserLs } from "../../Utils/localStorge";
 import styles from "./Content.module.scss";
 
-const Content = () => {
+const Content = props => {
     const {
         user: { data },
     } = useContext(userContext);
@@ -15,7 +14,7 @@ const Content = () => {
                     ? `${data.name.split(" ")[0]} Your Current Count is ${
                           data.entries
                       } `
-                    : `Your Current Count is ${offlineUserLs("get") || 0}`}
+                    : `Your Current Count is ${props.count || 0}`}
             </p>
             <p className={styles.content__sub_title}>
                 This Magic Brain Will Detect face in Your Picture. Get Try it.
@@ -23,4 +22,4 @@ const Content = () => {
         </div>
     );
 };
-export default memo(Content);
+export default Content;

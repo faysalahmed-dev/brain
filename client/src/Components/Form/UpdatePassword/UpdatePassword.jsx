@@ -1,6 +1,7 @@
 import React, { useReducer, useContext, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import axios from "../../../axios/axios";
+import axiosHeader from "../../../axios/helper";
 
 import { AlertContext } from "../../../Context/Alert.context";
 import { userContext } from "../../../Context/User.context";
@@ -41,7 +42,7 @@ const UpdatePassword = props => {
         error,
     } = state;
     const {
-        user: { data },
+        user: { data ,token},
         setUserData,
         removeUserData,
     } = useContext(userContext);
@@ -60,7 +61,7 @@ const UpdatePassword = props => {
         dispatch(toggleTheLoader(true));
         dispatch(toggleDisabledButton(true));
         axios
-            .put("/update-password", { password, newPassword })
+            .put("/update-password", { password, newPassword }, axiosHeader(token))
             .then(res => {
                 if (!res) return;
                 if (res.data.status === "success") {

@@ -11,10 +11,13 @@ const HomePage = () => {
     const {
         alert: { isShowAlert, message },
     } = useContext(AlertContext);
-    const {user:{data,token}} = useContext(userContext);
+    const {
+        user: { data, token },
+    } = useContext(userContext);
     if (!data || !token) return <Redirect to="/" />;
+    // "Logout/logout"
     return (
-        <Layout navItem={["Home/", "Logout/logout"]}>
+        <Layout navItem={["Home/"]}>
             <main>
                 {isShowAlert && <AlertBox>{message}</AlertBox>}
                 <div className={[styles.profile_page, "container"].join(" ")}>

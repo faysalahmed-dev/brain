@@ -1,29 +1,38 @@
 .navigation__item {
-  &:not(:last-child) {
-    margin-right: 2rem;
-  }
-  &-link {
-    display: inline-block;
-    font-size: 2rem;
-    text-decoration: none;
-    color: #fff;
-    position: relative;
-    font-family: var(--font-family);
-    letter-spacing: -1px;
-    &::before {
-      content: "";
-      width: 30px;
-      height: 2px;
-      display: block;
-      background: #fff;
-      transform: scaleX(0);
-      transition: all 0.2s;
-      position: absolute;
-      bottom: -2px;
-      left: 0;
+    &:not(:last-child) {
+        margin-right: 2rem;
     }
-    &:hover::before {
-      transform: scaleX(1);
+    button {
+        background: transparent;
+        outline: none;
+        border: none;
+        display: inline-block;
+        cursor: pointer;
+        line-height: 1.6;
     }
-  }
+    &-link,
+    button {
+        display: inline-block;
+        font-size: 2rem;
+        text-decoration: none;
+        color: #fff;
+        position: relative;
+        font-family: var(--font-family);
+        letter-spacing: -1px;
+        &::before {
+            content: "";
+            width: 30px;
+            height: 2px;
+            display: block;
+            background: #fff;
+            transform: scaleX(0);
+            transition: all 0.2s;
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+        }
+        &:hover::before {
+            transform: scaleX(1);
+        }
+    }
 }

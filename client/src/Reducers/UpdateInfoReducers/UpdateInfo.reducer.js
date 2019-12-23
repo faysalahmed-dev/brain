@@ -6,14 +6,6 @@ import {
     EDIT_MODE,
 } from "../actionTypes";
 
-// state = {
-//     userImg: imgPath + this.context.user.data.photo,
-//     userName: this.context.user.data.name,
-//     user: this.context.user.data,
-//     isEditMode: false,
-//     showLoader: false,
-// };
-
 export const updateInfoInitialState = {
     userImg: "",
     userName: "",

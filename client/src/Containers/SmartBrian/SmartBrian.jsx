@@ -1,5 +1,6 @@
-import React, { Fragment, useContext } from "react";
+import React, { Fragment, useContext, useState } from "react";
 import axios from "../../axios/axios";
+import axiosHeader from "../../axios/helper";
 
 import { AlertContext } from "../../Context/Alert.context";
 import { userContext } from "../../Context/User.context";
@@ -15,9 +16,10 @@ import FaceRecognition from "../../Components/FaceRecognition/FaceRecognition";
 
 import { calculateFaceBox } from "../../Utils/calculateFaceBox";
 import { runImage } from "../../Utils/Form";
-import { offlineUserLs } from "../../Utils/localStorge";
+import { totalCountDataLs } from "../../Utils/localStorge";
 
 const SmartBrain = () => {
+    const [count, setCount] = useState(totalCountDataLs("get") || 0);
     const {
         state: { imgUrl, error, showLoader },
         dispatch,
@@ -25,6 +27,7 @@ const SmartBrain = () => {
 
     const { showAlert } = useContext(AlertContext);
     const { updateData, user } = useContext(userContext);
+    const { token } = user;
 
     const displayFaceBox = box => {
         dispatch(updateBox(box));
@@ -36,13 +39,13 @@ const SmartBrain = () => {
             if (status === "success") {
                 dispatch(errorLog(false));
                 return axios
-                    .post("/detect-face", { input: imgUrl })
+                    .post("/detect-face", { input: imgUrl }, axiosHeader(token))
                     .then(({ data }) => {
                         dispatch(toggleTheLoader(false));
                         displayFaceBox(calculateFaceBox(data));
                         if (user.data && user.token) {
                             axios
-                                .put("image-entries")
+                                .put("image-entries", {}, axiosHeader(token))
                                 .then(entRes => {
                                     if (entRes.data.status === "success") {
                                         updateData(entRes.data.data);
@@ -51,7 +54,10 @@ const SmartBrain = () => {
                                 .catch(err =>
                                     showAlert(err.response.data.message),
                                 );
-                        } else offlineUserLs();
+                        } else {
+                            setCount(count + 1);
+                            totalCountDataLs();
+                        }
                     })
                     .catch(err => {
                         showAlert("Ops.can't detect the face.");
@@ -65,7 +71,7 @@ const SmartBrain = () => {
     };
     return (
         <Fragment>
-            <Content />
+            <Content count={count} />
             <ImgInputBox handleSubmit={onFormSubmit} />
             {/* error have three value (null || false || true) so make sure to check error === false*/}
             {error === false && !showLoader ? <FaceRecognition /> : null}

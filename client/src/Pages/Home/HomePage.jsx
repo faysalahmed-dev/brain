@@ -12,7 +12,7 @@ const HomePage = () => {
     } = useContext(AlertContext);
 
     return (
-        <Layout navItem={["Profile/profile", "Logout/logout"]}>
+        <Layout navItem={["Profile/profile"]}>
             <main>
                 {isShowAlert && <AlertBox>{message}</AlertBox>}
                 <div className="container home__main">

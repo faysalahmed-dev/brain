@@ -1,11 +1,22 @@
-import React from "react";
-
+import React, { useContext } from "react";
+import { withRouter } from "react-router-dom";
 import NavigationItem from "./NavigationItem/NavigationItem";
 import buildPath from "../../Utils/buildPath";
 
+import { userContext } from "../../Context/User.context";
+
 import "./Navigation.scss";
 
-const Navigation = ({ item }) => {
+const Navigation = ({ item, history }) => {
+    const {
+        user: { data, token },
+        removeUserData,
+    } = useContext(userContext);
+    const handleLogout = () => {
+        removeUserData();
+        history.replace("/");
+    };
+
     return (
         <nav className="navigation">
             <ul className="navigation__list">
@@ -20,8 +31,13 @@ const Navigation = ({ item }) => {
                         </NavigationItem>
                     );
                 })}
+                <li className="navigation__item">
+                    {data && token ? (
+                        <button onClick={handleLogout}>Logout</button>
+                    ) : null}
+                </li>
             </ul>
         </nav>
     );
 };
-export default React.memo(Navigation);
+export default React.memo(withRouter(Navigation));

@@ -10,21 +10,22 @@ export const saveUserInLs = (data, token) => {
     );
 };
 
-export const offlineUserLs = count => {
-    const offline_data = sessionStorage.getItem("offline_brain_user");
-    if (count === "get" && offline_data)
-        return JSON.parse(sessionStorage.getItem("offline_brain_user")).count;
-    if (offline_data) {
-        const oldData = JSON.parse(offline_data);
+export const totalCountDataLs = count => {
+    // get count
+    const count_data = sessionStorage.getItem("brain_count");
+    // count is get mean get data form local stroage
+    if (count === "get" && count_data)
+        return JSON.parse(sessionStorage.getItem("brain_count")).count;
+    // update count data
+    if (count_data) {
+        const oldData = JSON.parse(count_data);
         sessionStorage.setItem(
-            "offline_brain_user",
+            "brain_count",
             JSON.stringify({ count: oldData.count + 1 }),
         );
+        // reset count data
     } else {
-        sessionStorage.setItem(
-            "offline_brain_user",
-            JSON.stringify({ count: 0}),
-        );
+        sessionStorage.setItem("brain_count", JSON.stringify({ count: 0 }));
     }
 };
 

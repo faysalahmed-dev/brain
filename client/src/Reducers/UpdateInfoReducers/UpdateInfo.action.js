@@ -1,4 +1,4 @@
-import { SET_USER, EDIT_MODE, ERROR_LOG } from "../actionTypes";
+import { SET_USER, EDIT_MODE, ERROR_LOG, RESET_STATE } from "../actionTypes";
 
 export const setUser = payload => ({
     type: SET_USER,

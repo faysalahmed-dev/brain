@@ -1,5 +1,6 @@
 import React, { useReducer, useEffect, useContext } from "react";
 import axios from "../../../axios/axios";
+import axiosHeader from "../../../axios/helper";
 import { Link, withRouter } from "react-router-dom";
 
 import FormInput from "../FormInput/FormInput";
@@ -46,7 +47,7 @@ const UpdateInfo = props => {
         error,
     } = state;
     const {
-        user: { data },
+        user: { data, token },
         updateData,
         removeUserData,
     } = useContext(userContext);
@@ -94,8 +95,9 @@ const UpdateInfo = props => {
             userForm.append("name", userName.trim());
             userForm.append("photo", photo);
             axios
-                .put("/update-account", userForm)
+                .put("/update-account", userForm, axiosHeader(token))
                 .then(res => {
+                    dispatch(errorLog(null));
                     if (res.data.status === "success") {
                         showAlert("account is updated");
                         updateData(res.data.data);
