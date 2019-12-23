@@ -1,15 +1,21 @@
 import React, { useReducer, useContext, useEffect } from "react";
+import { withRouter } from "react-router-dom";
+import axios from "../../../axios/axios";
+
+import { AlertContext } from "../../../Context/Alert.context";
+import { userContext } from "../../../Context/User.context";
+
 import { InputButton } from "../../UI/Button/Button";
 import Loader from "../../Loader/Loader";
-import axios from "../../../axios/axios";
-import { AlertContext } from "../../../Context/Alert.context";
+
 import FormInput from "../FormInput/FormInput";
 import { testInputValue, buttonDisabledOrNot } from "../../../Utils/Form";
-import { userContext } from "../../../Context/User.context";
+
 import {
     initalState,
     updatePasswordReducer,
 } from "../../../Reducers/UpdatePassword/UpdatePassword.reducer";
+
 import {
     toggleMode,
     cancleEdit,
@@ -20,9 +26,10 @@ import {
     onInputChange,
     errorLog,
 } from "../../../Reducers/FormReducers/Form.action";
+
 import styles from "../Form.module.scss";
 
-const UpdatePassword = () => {
+const UpdatePassword = props => {
     const [state, dispatch] = useReducer(updatePasswordReducer, initalState);
     const {
         password,
@@ -36,6 +43,7 @@ const UpdatePassword = () => {
     const {
         user: { data },
         setUserData,
+        removeUserData,
     } = useContext(userContext);
     const { showAlert } = useContext(AlertContext);
 
@@ -63,7 +71,17 @@ const UpdatePassword = () => {
                     showAlert("something went wrong.password is not updated");
                 }
             })
-            .catch(err => showAlert(err.response.data.message))
+            .catch(err => {
+                showAlert(err.response.data.message);
+                if (err.response.data.status === 401) {
+                    // unauth
+                    // clear the local stroge
+                    // clear the state
+                    removeUserData();
+                    // redirct to the home page
+                    props.history.replace("/");
+                }
+            })
             .finally(() => {
                 dispatch(toggleTheLoader(false));
                 dispatch(toggleDisabledButton(false));
@@ -140,4 +158,4 @@ const UpdatePassword = () => {
     );
 };
 
-export default UpdatePassword;
+export default withRouter(UpdatePassword);

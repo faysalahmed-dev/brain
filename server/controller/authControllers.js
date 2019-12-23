@@ -35,7 +35,7 @@ exports.singin = catchError(async (req, res, next) => {
         .where({ email: email.trim() });
     if (!user.length)
         return next(
-            new ErrorHandler("no account found with this email address", 401),
+            new ErrorHandler("no account found with this email address", 404),
         );
 
     const isPasswordMatch = await comparePassword(
@@ -107,7 +107,7 @@ exports.forgetPassword = catchError(async (req, res, next) => {
         .where({ email });
     if (!userEamil.length)
         return next(
-            new ErrorHandler("no user found with this email address", 400),
+            new ErrorHandler("no user found with this email address", 404),
         );
 
     try {

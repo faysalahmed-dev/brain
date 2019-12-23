@@ -14,7 +14,7 @@ exports.profile = catchError(async (req, res, next) => {
     const { id } = req.user;
     if (!id)
         return next(
-            new ErrorHandler("someting went wrong.please login again", 404),
+            new ErrorHandler("someting went wrong.please login again", 401),
         );
 
     const user = await db
@@ -100,7 +100,7 @@ exports.protectRoute = async (req, res, next) => {
         );
     }
     req.user = currentUser[0];
-    console.log(currentUser[0]);
+    // console.log(currentUser[0]);
     next();
 };
 
@@ -108,7 +108,7 @@ exports.updateAccount = catchError(async (req, res, next) => {
     const { id } = req.user;
     if (req.body.password)
         return next(
-            new ErrorHandler("this route is not for update password", 404),
+            new ErrorHandler("this route is not for update password", 406),
         );
 
     const field = ["name"];

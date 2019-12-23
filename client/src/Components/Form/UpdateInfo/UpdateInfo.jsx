@@ -1,31 +1,37 @@
 import React, { useReducer, useEffect, useContext } from "react";
+import axios from "../../../axios/axios";
+import { Link, withRouter } from "react-router-dom";
+
 import FormInput from "../FormInput/FormInput";
 import { userContext } from "../../../Context/User.context";
+import { AlertContext } from "../../../Context/Alert.context";
+
 import { InputButton } from "../../UI/Button/Button";
 import Loader from "../../Loader/Loader";
-import { AlertContext } from "../../../Context/Alert.context";
-import axios from "../../../axios/axios";
+
 import {
     onInputChange,
     toggleTheLoader,
     toggleDisabledButton,
 } from "../../../Reducers/FormReducers/Form.action";
-import {
-    updateInfoInitialState,
-    updateInfoReducer,
-} from "../../../Reducers/UpdateInfoReducers/UpdateInfo.reducer";
 import { errorLog } from "../../../Reducers/UpdateInfoReducers/UpdateInfo.action";
 import {
     setUser,
     toggleEditMode,
 } from "../../../Reducers/UpdateInfoReducers/UpdateInfo.action";
+
+import {
+    updateInfoInitialState,
+    updateInfoReducer,
+} from "../../../Reducers/UpdateInfoReducers/UpdateInfo.reducer";
+
 import { testInputValue } from "../../../Utils/Form";
+
 import styles from "./UpdateInfo.module.scss";
-import { Link } from "react-router-dom";
 
 const imgPath = "http://localhost:4000/img/";
 
-const UpdateInfo = () => {
+const UpdateInfo = props => {
     const [state, dispatch] = useReducer(
         updateInfoReducer,
         updateInfoInitialState,
@@ -42,6 +48,7 @@ const UpdateInfo = () => {
     const {
         user: { data },
         updateData,
+        removeUserData,
     } = useContext(userContext);
     const { showAlert } = useContext(AlertContext);
     const { name, email, photo, entries } = data;
@@ -98,7 +105,17 @@ const UpdateInfo = () => {
                             "something went wrong. can not update account",
                         );
                 })
-                .catch(err => showAlert(err.response.data.message))
+                .catch(err => {
+                    showAlert(err.response.data.message);
+                    if (err.response.data.status === 401) {
+                        // unauth
+                        // clear the local stroge
+                        // clear the state
+                        removeUserData();
+                        // redirct to the home page
+                        props.history.replace("/");
+                    }
+                })
                 .finally(() => {
                     dispatch(toggleDisabledButton(false));
                     dispatch(toggleTheLoader(false));
@@ -157,4 +174,4 @@ const UpdateInfo = () => {
         </form>
     );
 };
-export default UpdateInfo;
+export default withRouter(UpdateInfo);
